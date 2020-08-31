@@ -10,6 +10,7 @@ export class App extends Component {
       number: '',
       isOperatorClicked: false,
       isNegativeActive: false,
+      isDecimalActive: false
     }
   }
 
@@ -17,6 +18,11 @@ export class App extends Component {
 
   handleOperatorClick = (e) => {
     let currNumber = e.target.innerHTML;
+    if (this.state.isDecimalActive) {
+      this.setState({
+        isDecimalActive: false
+      })
+    } 
     if (!this.state.isOperatorClicked && !this.state.isNegativeActive) {
       this.setState(state => ({
         number: state.number.concat(currNumber),
@@ -38,7 +44,12 @@ export class App extends Component {
     }
   }
 
-  handleMinusClick = (e) => {
+  handleMinusClick = () => {
+    if (this.state.isDecimalActive) {
+      this.setState({
+        isDecimalActive: false
+      })
+    }
     if (!this.state.isOperatorClicked && !this.state.isNegativeActive) {
       this.setState(state => ({
         number: state.number.concat('-'),
@@ -67,6 +78,15 @@ export class App extends Component {
   }
 }
 
+  handleDecimalClick = () => {
+    if (!this.state.isDecimalActive) {
+      this.setState(state => ({
+        number: state.number.concat('.'),
+        isDecimalActive: true
+      }))
+    }
+  }
+
   handleDigitClick = (e) => {
     let currNumber = e.target.innerHTML;
     this.setState(state => ({
@@ -74,6 +94,22 @@ export class App extends Component {
       isOperatorClicked: false
     }))
   }
+
+  handleEqualsClick = () => {
+
+    // just use eval(). It's safe if no user input is given as text and as this is buttons I think it's ok in this case
+    let t = this.state.number.replace(/\/-/ig, 'd');
+    t = t.replace(/\x\-/ig, 't');
+    t = t.replace(/\+\-/ig, 'a');
+    let s = t.split(/([+\-\/xdta])/ig);
+    //console.log(t);
+    //console.log(s);
+   
+
+  // ['5', '+', '23', 'X', '45', '-', '5']
+
+
+
 
   // have operator button trigger a type of state e.g. 'divide'. 
   // They all overwrite each other except the minus button
@@ -103,7 +139,8 @@ export class App extends Component {
         <button onClick={this.handleDigitClick}>7</button>
         <button onClick={this.handleDigitClick}>8</button>
         <button onClick={this.handleDigitClick}>9</button>
-
+        <button onClick={this.handleDecimalClick}>.</button>
+        <button onClick={this.handleEqualsClick}>=</button>
       </div>
     )
   }
