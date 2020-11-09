@@ -3,7 +3,7 @@ import './App.css';
 import Pad from './Pad'
 import Display from './Display'
 
-export class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,10 +14,15 @@ export class App extends Component {
     }
   }
 
-  // & --Optrue    &-  --OptrueNegtrue    - Optrue
+  
 
   handleOperatorClick = (e) => {
     let currNumber = e.target.innerHTML;
+  
+    if (currNumber == 'X') {
+      currNumber = '*';
+    }
+    
     if (this.state.isDecimalActive) {
       this.setState({
         isDecimalActive: false
@@ -55,11 +60,11 @@ export class App extends Component {
         number: state.number.concat('-'),
         isOperatorClicked: true
       }))
-    } else if (this.state.isOperatorClicked && !this.state.isNegativeActive) {
+    } else if (this.state.isOperatorClicked && !this.state.isNegativeActive) { // +*/ & no -
       this.setState(state => ({
         number: state.number.concat('-'),
-        isNegativeActive: true,
-        isOperatorClicked: false
+        isNegativeActive: true
+      
       }))
   } else if (this.state.isNegativeActive) {
     let lastIndex = this.state.number.length;
@@ -89,24 +94,32 @@ export class App extends Component {
 
   handleDigitClick = (e) => {
     let currNumber = e.target.innerHTML;
+
     this.setState(state => ({
       number: state.number.concat(currNumber),
-      isOperatorClicked: false
+      isOperatorClicked: false,
+      isNegativeActive: false
     }))
   }
 
   handleEqualsClick = () => {
 
     // just use eval(). It's safe if no user input is given as text and as this is buttons I think it's ok in this case
-    let t = this.state.number.replace(/\/-/ig, 'd');
-    t = t.replace(/\x\-/ig, 't');
-    t = t.replace(/\+\-/ig, 'a');
-    let s = t.split(/([+\-\/xdta])/ig);
-    //console.log(t);
-    //console.log(s);
+    let cleanedResult = this.state.number.replace(/--/g, "+");
+    console.log(cleanedResult)
+    let result = eval(cleanedResult);
+    console.log(result);
+    this.setState(state => ({
+      result: result,
+      number: '',
+      isOperatorClicked: false,
+      isNegativeActive: false,
+      isDecimalActive: false
+    }))
+ 
    
+  }
 
-  // ['5', '+', '23', 'X', '45', '-', '5']
 
 
 
@@ -146,6 +159,6 @@ export class App extends Component {
   }
 }
 
-export default App
+
 
 
