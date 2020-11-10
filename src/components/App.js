@@ -1,130 +1,131 @@
-import React, { Component } from 'react'
-import './App.css';
-import Pad from './Pad'
-import Display from './Display'
+import React, { Component } from "react";
+import "./App.css";
+import Pad from "./Pad";
+import Display from "./Display";
+import AC from "./AC";
 
 export default class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      number: '',
+      number: "",
       isOperatorClicked: false,
       isNegativeActive: false,
-      isDecimalActive: false
-    }
+      isDecimalActive: false,
+    };
   }
-
-  
 
   handleOperatorClick = (e) => {
     let currNumber = e.target.innerHTML;
-  
-    if (currNumber == 'X') {
-      currNumber = '*';
+
+    if (currNumber == "X") {
+      currNumber = "*";
     }
-    
+
     if (this.state.isDecimalActive) {
       this.setState({
-        isDecimalActive: false
-      })
-    } 
+        isDecimalActive: false,
+      });
+    }
     if (!this.state.isOperatorClicked && !this.state.isNegativeActive) {
-      this.setState(state => ({
+      this.setState((state) => ({
         number: state.number.concat(currNumber),
-        isOperatorClicked: true
-      }))
+        isOperatorClicked: true,
+      }));
     } else if (this.state.isNegativeActive) {
       let lastIndex = this.state.number.length;
-      this.setState(state => ({
+      this.setState((state) => ({
         number: state.number.slice(0, lastIndex - 2).concat(currNumber),
         isNegativeActive: false,
         isOperatorClicked: true,
-      }))
+      }));
     } else {
       let lastIndex = this.state.number.length;
-      this.setState(state => ({
+      this.setState((state) => ({
         number: state.number.slice(0, lastIndex - 1).concat(currNumber),
-        isOperatorClicked: true
-      }))
+        isOperatorClicked: true,
+      }));
     }
-  }
+  };
 
   handleMinusClick = () => {
     if (this.state.isDecimalActive) {
       this.setState({
-        isDecimalActive: false
-      })
+        isDecimalActive: false,
+      });
     }
     if (!this.state.isOperatorClicked && !this.state.isNegativeActive) {
-      this.setState(state => ({
-        number: state.number.concat('-'),
-        isOperatorClicked: true
-      }))
-    } else if (this.state.isOperatorClicked && !this.state.isNegativeActive) { // +*/ & no -
-      this.setState(state => ({
-        number: state.number.concat('-'),
-        isNegativeActive: true
-      
-      }))
-  } else if (this.state.isNegativeActive) {
-    let lastIndex = this.state.number.length;
-      this.setState(state => ({
-        number: state.number.slice(0, lastIndex - 2).concat('-'),
+      this.setState((state) => ({
+        number: state.number.concat("-"),
+        isOperatorClicked: true,
+      }));
+    } else if (this.state.isOperatorClicked && !this.state.isNegativeActive) {
+      // +*/ & no -
+      this.setState((state) => ({
+        number: state.number.concat("-"),
+        isNegativeActive: true,
+      }));
+    } else if (this.state.isNegativeActive) {
+      let lastIndex = this.state.number.length;
+      this.setState((state) => ({
+        number: state.number.slice(0, lastIndex - 2).concat("-"),
         isNegativeActive: false,
-        isOperatorClicked: true
-      }))
-  }
-  else {
-    let lastIndex = this.state.number.length;
-      this.setState(state => ({ 
-        number: state.number.slice(0, lastIndex - 1).concat('-'),
-        isOperatorClicked: true
-      }))
-  }
-}
+        isOperatorClicked: true,
+      }));
+    } else {
+      let lastIndex = this.state.number.length;
+      this.setState((state) => ({
+        number: state.number.slice(0, lastIndex - 1).concat("-"),
+        isOperatorClicked: true,
+      }));
+    }
+  };
 
   handleDecimalClick = () => {
     if (!this.state.isDecimalActive) {
-      this.setState(state => ({
-        number: state.number.concat('.'),
-        isDecimalActive: true
-      }))
+      this.setState((state) => ({
+        number: state.number.concat("."),
+        isDecimalActive: true,
+      }));
     }
-  }
+  };
 
   handleDigitClick = (e) => {
     let currNumber = e.target.innerHTML;
 
-    this.setState(state => ({
+    this.setState((state) => ({
       number: state.number.concat(currNumber),
       isOperatorClicked: false,
-      isNegativeActive: false
-    }))
-  }
+      isNegativeActive: false,
+    }));
+  };
 
   handleEqualsClick = () => {
-
     // just use eval(). It's safe if no user input is given as text and as this is buttons I think it's ok in this case
     let cleanedResult = this.state.number.replace(/--/g, "+");
-    console.log(cleanedResult)
+    console.log(cleanedResult);
     let result = eval(cleanedResult);
     console.log(result);
-    this.setState(state => ({
+    this.setState((state) => ({
       result: result,
-      number: '',
+      number: "",
       isOperatorClicked: false,
       isNegativeActive: false,
-      isDecimalActive: false
-    }))
- 
-   
-  }
+      isDecimalActive: false,
+    }));
+  };
 
+  handleACClick = () => {
+    this.setState((state) => ({
+      result: "",
+      number: "",
+      isOperatorClicked: false,
+      isNegativeActive: false,
+      isDecimalActive: false,
+    }));
+  };
 
-
-
-
-  // have operator button trigger a type of state e.g. 'divide'. 
+  // have operator button trigger a type of state e.g. 'divide'.
   // They all overwrite each other except the minus button
   // Treat minus as another digit rather than an operator.
   // divideIsClicked property - boolean
@@ -133,13 +134,25 @@ export default class App extends Component {
   // how to stop updating multiple / / / / or x x x x etc - use divideisclicked state conditional
   // how to display it?
 
-
   render() {
     return (
-      <div className="container">
-        <Pad />
+      <div id="calculator" className="container">
+        <div className="row vertical-center">
+          <div className="col-3"></div>
+          <div className="col-6">
+        <Pad
+          handleOperatorClick={this.handleOperatorClick}
+          handleACClick={this.handleACClick}
+          handleDecimalClick={this.handleDecimalClick}
+          handleDigitClick={this.handleDigitClick}
+          handleMinusClick={this.handleMinusClick}
+          handleEqualsClick={this.handleEqualsClick}
+        />
         <Display />
-        <button onClick={this.handleOperatorClick}>/</button>
+        </div>
+        <div className="col-3"></div>
+        </div>
+        {/* <button onClick={this.handleOperatorClick}>/</button>
         <button onClick={this.handleOperatorClick}>X</button>
         <button onClick={this.handleOperatorClick}>+</button>
         <button onClick={this.handleMinusClick}>-</button>
@@ -153,12 +166,8 @@ export default class App extends Component {
         <button onClick={this.handleDigitClick}>8</button>
         <button onClick={this.handleDigitClick}>9</button>
         <button onClick={this.handleDecimalClick}>.</button>
-        <button onClick={this.handleEqualsClick}>=</button>
+        <button onClick={this.handleEqualsClick}>=</button> */}
       </div>
-    )
+    );
   }
 }
-
-
-
-
