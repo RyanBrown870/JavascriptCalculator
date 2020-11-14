@@ -9,17 +9,23 @@ export default class App extends Component {
     super(props);
     this.state = {
       number: "",
+      result: "",
       isOperatorClicked: false,
       isNegativeActive: false,
       isDecimalActive: false,
+      isEqualsClicked: false,
     };
   }
 
   handleOperatorClick = (e) => {
     let currNumber = e.target.innerHTML;
 
-    if (currNumber == "X") {
-      currNumber = "*";
+    if (this.state.isEqualsClicked) {
+      this.setState({
+        result: "",
+        number: "",
+        isEqualsClicked: false
+      })
     }
 
     if (this.state.isDecimalActive) {
@@ -49,6 +55,15 @@ export default class App extends Component {
   };
 
   handleMinusClick = () => {
+
+    if (this.state.isEqualsClicked) {
+      this.setState({
+        result: "",
+        number: "",
+        isEqualsClicked: false
+      })
+    }
+
     if (this.state.isDecimalActive) {
       this.setState({
         isDecimalActive: false,
@@ -82,6 +97,15 @@ export default class App extends Component {
   };
 
   handleDecimalClick = () => {
+
+    if (this.state.isEqualsClicked) {
+      this.setState({
+        result: "",
+        number: "",
+        isEqualsClicked: false
+      })
+    }
+
     if (!this.state.isDecimalActive) {
       this.setState((state) => ({
         number: state.number.concat("."),
@@ -93,6 +117,14 @@ export default class App extends Component {
   handleDigitClick = (e) => {
     let currNumber = e.target.innerHTML;
 
+    if (this.state.isEqualsClicked) {
+      this.setState({
+        result: "",
+        number: "",
+        isEqualsClicked: false
+      })
+    }
+
     this.setState((state) => ({
       number: state.number.concat(currNumber),
       isOperatorClicked: false,
@@ -103,15 +135,16 @@ export default class App extends Component {
   handleEqualsClick = () => {
     // just use eval(). It's safe if no user input is given as text and as this is buttons I think it's ok in this case
     let cleanedResult = this.state.number.replace(/--/g, "+");
+    let asteriskResult = cleanedResult.replace(/x/g, "*");
     console.log(cleanedResult);
-    let result = eval(cleanedResult);
-    console.log(result);
+    let result = eval(asteriskResult);
+    
     this.setState((state) => ({
       result: result,
-      number: "",
       isOperatorClicked: false,
       isNegativeActive: false,
       isDecimalActive: false,
+      isEqualsClicked: true,
     }));
   };
 
@@ -138,35 +171,24 @@ export default class App extends Component {
     return (
       <div id="calculator" className="container">
         <div className="row vertical-center">
-          <div className="col-3"></div>
-          <div className="col-6">
-        <Pad
-          handleOperatorClick={this.handleOperatorClick}
-          handleACClick={this.handleACClick}
-          handleDecimalClick={this.handleDecimalClick}
-          handleDigitClick={this.handleDigitClick}
-          handleMinusClick={this.handleMinusClick}
-          handleEqualsClick={this.handleEqualsClick}
-        />
-        <Display />
+          <div className="col-4"></div>
+          <div className="col-4">
+            <Display
+              result={this.state.result}
+              isEqualsClicked={this.state.isEqualsClicked}
+              number={this.state.number}
+            />
+            <Pad
+              handleOperatorClick={this.handleOperatorClick}
+              handleACClick={this.handleACClick}
+              handleDecimalClick={this.handleDecimalClick}
+              handleDigitClick={this.handleDigitClick}
+              handleMinusClick={this.handleMinusClick}
+              handleEqualsClick={this.handleEqualsClick}
+            />
+          </div>
+          <div className="col-4"></div>
         </div>
-        <div className="col-3"></div>
-        </div>
-        {/* <button onClick={this.handleOperatorClick}>/</button>
-        <button onClick={this.handleOperatorClick}>X</button>
-        <button onClick={this.handleOperatorClick}>+</button>
-        <button onClick={this.handleMinusClick}>-</button>
-        <button onClick={this.handleDigitClick}>1</button>
-        <button onClick={this.handleDigitClick}>2</button>
-        <button onClick={this.handleDigitClick}>3</button>
-        <button onClick={this.handleDigitClick}>4</button>
-        <button onClick={this.handleDigitClick}>5</button>
-        <button onClick={this.handleDigitClick}>6</button>
-        <button onClick={this.handleDigitClick}>7</button>
-        <button onClick={this.handleDigitClick}>8</button>
-        <button onClick={this.handleDigitClick}>9</button>
-        <button onClick={this.handleDecimalClick}>.</button>
-        <button onClick={this.handleEqualsClick}>=</button> */}
       </div>
     );
   }
