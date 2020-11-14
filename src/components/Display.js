@@ -8,21 +8,28 @@ export default class Display extends React.Component {
     render()  {
 
     let display;
-    if (!this.props.isEqualsClicked) {
-        display = <p>0</p>
+    let number;
+    if (!this.props.displayResult) {
+        display = <p>{this.props.result}</p>
     } else {
-    display = <p>{this.props.result}</p>
+    display = <p>{this.props.displayResult}</p>
     }
-
+    if (!this.props.number) {
+        number = <p>0</p>
+    } else {
+        number = <p>{this.props.number}</p>
+    }
     return (
         <div className="row no-gutters">
           
-        
+        <div className="col-12">
 
 
-            {display}
-        
-            <p>{this.props.number}</p>
+        {display}
+        </div>
+        <div className="col-12">
+            {number}
+            </div>
         </div>
     )
 }
