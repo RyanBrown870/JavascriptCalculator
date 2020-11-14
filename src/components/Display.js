@@ -9,27 +9,29 @@ export default class Display extends React.Component {
 
     let display;
     let number;
-    if (!this.props.displayResult) {
-        display = <p>{this.props.result}</p>
+    if (!this.props.displayResult && !this.props.number) {
+        display = <p id="display" className="float-right text-warning w-100">0</p>
+    } else if (!this.props.displayResult && this.props.number) {
+    display = <p id="display" className="float-right text-warning w-100">{this.props.number}</p>
     } else {
-    display = <p>{this.props.displayResult}</p>
+    display = <p id="display" className="float-right text-warning w-100">{this.props.result}</p>
     }
     if (!this.props.number) {
-        number = <p>0</p>
+        number = <p className="float-right text-light w-100">0</p>
     } else {
-        number = <p>{this.props.number}</p>
+        number = <p className="float-right text-light w-100">{this.props.number}</p>
     }
     return (
         <div className="row no-gutters">
           
-        <div className="col-12">
+       {/* <div className="col-12"> */}
 
 
         {display}
-        </div>
-        <div className="col-12">
+        {/* </div> */}
+        {/* <div className="col-12"> */}
             {number}
-            </div>
+            {/* </div> */}
         </div>
     )
 }

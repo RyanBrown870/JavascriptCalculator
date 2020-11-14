@@ -3,6 +3,7 @@ import "./App.css";
 import Pad from "./Pad";
 import Display from "./Display";
 import AC from "./AC";
+import ReactFCCtest from 'react-fcctest';
 
 export default class App extends Component {
   constructor(props) {
@@ -177,6 +178,9 @@ export default class App extends Component {
   };
 
   handleEqualsClick = () => {
+    // Only runs if an operator has been called
+    if (this.state.number.match(/[\+x\/-]/i)) {
+    
     // just use eval(). It's safe if no user input is given as text and as this is buttons I think it's ok in this case
     let cleanedResult = this.state.number.replace(/--/g, "+"); // Replace double negative with +
     let asteriskResult = cleanedResult.replace(/x/g, "*"); // Replace x with * for eval
@@ -191,11 +195,12 @@ export default class App extends Component {
       isDecimalActive: false,
       isEqualsClicked: true,
     }));
+  }
   };
 
   handleACClick = () => {
     this.setState((state) => ({
-      result: "0",
+      result: "",
       number: "",
       isOperatorClicked: false,
       isNegativeActive: false,
@@ -210,8 +215,8 @@ export default class App extends Component {
     return (
       <div id="calculator" className="container">
         <div className="row vertical-center">
-          <div className="col-4"></div>
-          <div className="col-4">
+          <div className="col"></div>
+          <div className="col col-md-3 col-lg-2 border border-dark rounded bg-dark">
             <Display
               result={this.state.result}
               isEqualsClicked={this.state.isEqualsClicked}
@@ -227,8 +232,9 @@ export default class App extends Component {
               handleEqualsClick={this.handleEqualsClick}
             />
           </div>
-          <div className="col-4"></div>
+          <div className="col"></div>
         </div>
+        <ReactFCCtest />
       </div>
     );
   }

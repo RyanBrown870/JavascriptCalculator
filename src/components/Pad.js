@@ -2,6 +2,7 @@ import React from 'react'
 import AC from './AC'
 import Button from './Button'
 import list from './list'
+import ids from './ids'
 
 export default function Pad(props) {
     return (
@@ -17,14 +18,20 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleACClick}
+                        colour="danger"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 } else if (item == '/' || item == 'x' || item == '+') {
-                    return <div className="col-3">
+                    return <div  className="col-3">
                     <Button
                         key={item}
                         item={item}
                         handleClick={props.handleOperatorClick}
+                        colour="secondary"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 } else if (item == '-') {
@@ -33,6 +40,9 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleMinusClick}
+                        colour="secondary"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 } else if (item == '.') {
@@ -41,6 +51,9 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleDecimalClick}
+                        colour="dark"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 } else if (item == '=') {
@@ -49,6 +62,9 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleEqualsClick}
+                        colour="info"
+                        h="h-100"
+                        id={ids[index]}
                      />
                     </div>
                 } else if (item == '0') {
@@ -57,6 +73,9 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleDigitClick}
+                        colour="dark"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 } else {
@@ -65,6 +84,9 @@ export default function Pad(props) {
                         key={item}
                         item={item}
                         handleClick={props.handleDigitClick}
+                        colour="dark"
+                        h=""
+                        id={ids[index]}
                      />
                     </div>
                 }
