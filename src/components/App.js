@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import Pad from "./Pad";
 import Display from "./Display";
-import AC from "./AC";
 import ReactFCCtest from 'react-fcctest';
 
 export default class App extends Component {

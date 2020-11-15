@@ -1,5 +1,4 @@
 import React from 'react'
-import AC from './AC'
 import Button from './Button'
 import list from './list'
 import ids from './ids'
